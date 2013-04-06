@@ -15,7 +15,7 @@ passport.use(new LocalStrategy(
   function(username, password, done) {
     User.findOne({ username: username }, function (err, user) {
       if (err) { return done(err); }
-      if (!user) { return done(null, false, {message: 'Unknown user' + username}); }
+      if (!user) { return done(null, false, {message: 'Unknown user ' + username}); }
       user.verifyPassword(password, function(err, valid){ 
         if(err) return done(err);
         if(!valid) return done(null, false, {message: 'Invalid password'});

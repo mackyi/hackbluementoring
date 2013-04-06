@@ -1,0 +1,4 @@
+.spacer{padding-bottom:40px}
+#login .error,#register .error,#serverMessage{background:#890000;padding:5px 10px;color:#fff;text-shadow:#500 0 1px 0;white-space:nowrap;border:1px solid #500;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px;-moz-box-shadow:0 0 5px #700;-webkit-box-shadow:0 0 5px #700;box-shadow:0 0 5px #700}
+#login .error,#register .error{font-size:11px;text-align:left}
+#serverMessage{margin:auto;font-size:12px;text-align:center}

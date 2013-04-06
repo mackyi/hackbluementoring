@@ -2,7 +2,8 @@ var express = require('express'),
   mongodb = require('mongodb'),
   mongoose = require('mongoose'),
   passport = require('passport'),
-  stylus = require('stylus');
+  stylus = require('stylus'),
+  nib = require('nib');
 
 db = require('./accessDB')
 
@@ -14,31 +15,31 @@ db.startup('mongodb://localhost/hackblue');
 function compile(str, path) {
   return stylus(str)
     .set('filename', path)
+    .set('compress', true)
     .use(nib());
 }
 
 app.configure(function(){
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
+  app.use(express.bodyParser());
+  app.use(express.cookieParser());
+  app.use(express.methodOverride());
 
+  app.use(app.router);
   app.use(stylus.middleware({
       src: __dirname + '/views'
     , dest: __dirname + '/public'
     , compile: compile
-    , force: true
-    , compress: true
     }
   ))
-
   app.use(express.static('public'));
-  app.use(express.bodyParser());
-  app.use(express.cookieParser());
-  app.use(express.methodOverride());
+
   app.use(express.session({secret: 'lalaalalalaaa'}));
   app.use(passport.initialize());
   app.use(passport.session());
-  app.use(app.router);
-
+  
+  
   
 });
 

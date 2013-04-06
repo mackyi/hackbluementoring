@@ -1,0 +1,31 @@
+!!! 5
+html 
+	head
+		block head
+		link(rel="stylesheet", href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.0/css/bootstrap-combined.min.css")
+		link(rel="stylesheet", href="/css/hackblue.css")
+	body
+		.navbar.navbar-fixed-top.navbar-inverse
+			.navbar-inner
+				.container
+					ul.nav
+						li: a(href="/") Home
+					container.pull-right
+						- if (typeof locals.user !== 'undefined')
+							a.btn.btn-primary
+								i.icon-user
+								|  
+								| #{locals.user.username}
+						- else
+							a.btn.btn-primary.pull-right(href="/login") Login &raquo
+							a.btn.btn-inverse.pull-right#navregister(href="/register") Register &raquo
+		.spacer
+		- if(typeof locals.message !== 'undefined')
+				#serverMessage
+					p #{locals.message}
+					
+		block content
+		include includes/footer
+
+		script(src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js")
+		block scripts

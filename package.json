@@ -1,0 +1,20 @@
+{
+  "name": "hackbluementoring",
+  "version": "0.0.1",
+  
+  "dependencies": {
+    "express": "3.x",
+    "mongoose": "3.4.0",
+    "mongodb":"1.2.x",
+    "jade": "0.27.7",
+    "bcrypt": "0.7.5",
+    "passport":"0.1.x",
+    "passport-local":"0.1.x", 
+    "stylus": "*",
+    "nib":"*"
+  },
+  "engines": {
+    "node": "0.8.x",
+    "npm": "1.1.x"
+  }
+}

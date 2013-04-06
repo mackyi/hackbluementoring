@@ -1,0 +1,23 @@
+extends layout
+block head
+  title Register
+block scripts
+  script(src="/javascript/registervalidation.js")
+block content
+  .container 
+   form#register(action='/register', method='POST')
+      h1 Register your account!
+      p.login Already have an account?
+        a(href="/login") Login here!
+      div
+        label(for='register_username') Username:
+        input#register_username(type='text', name='username', class="field required", title="Please provide a username")
+      div
+        label(for='register_password') Password: 
+        input#register_password(type='password', name='password', class="field required", title="Password is required")
+      div
+        label(for='confirm_password') Confirm Password: 
+        input#confirm_password(type='password', name='confirm', class="field required", title="Confirm your password")
+      p.forgot: a(href="/forgotpassword") Forgot your password?
+      .submit
+        button(type='submit') Register

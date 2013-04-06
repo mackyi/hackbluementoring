@@ -1,0 +1,20 @@
+extends layout
+block head
+  title Login
+block scripts
+  script(src="/javascript/loginvalidation.js")
+block content
+  .container.backBox
+    form#login(action='/login', method='POST')
+      h1 Login to your account!
+      p.register Not a member? 
+        a(href="/register") Register here!
+      div
+        label(for='login_username') Username:
+        input#login_username(type='text', name='username', class="field required", title="Please provide your username")
+      div
+        label(for='login_password') Password: 
+        input#login_password(type='password', name='password', class="field required", title="Password is required")
+      p.forgot: a(href="/forgotpassword") Forgot your password?
+      .submit
+        button(type='submit') Login

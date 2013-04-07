@@ -26,12 +26,14 @@ block content
 							textarea#text(cols='100', rows='5', name='text', type='text')
 						.submit
 							button.btn(type='submit') Assign
-					assignments = locals.user.lessonIds
-					mixin format(lessonId)
+					assignments = lesson.assignments
+					mixin format(assignment)
 						.row
-							p id is: #{lessonId}
-					-each lessonId in lessonIds
-						mixin format(lessonId)
+							.span6
+								h3 assignment.name
+								p assignment.text
+					-each assignment in assignments
+						mixin format(assignment)
 				.span3
 					h1 chat
 block scripts

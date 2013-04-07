@@ -49,5 +49,17 @@ module.exports = function(app){
 	     req.logout();
 	     res.redirect('/');
 	})
+
+	app.post('/searchMentors', function(req, res){
+		parameters = req.param('searchParameters');
+		minRating = parameters.minRating;
+		firstName = parameters.firstname;
+		lastName = parameters.lastname;
+		areas = parameters.areas.split(",");
+	})
+
+	app.post('/searchStudents', function(req, res){
+
+	}
 }
 	

@@ -11,6 +11,7 @@ var userSchema = new Schema({
 	userType: String,				//'mentor' or 'student'
 	fname: String,
 	lname: String,
+	bio: String,
 	picUrl: String,					//URL of profile pic
 	lessonIds: [ObjectId],			//mentor only - all lessons the mentor is teaching
 	mentorRequests: [{				//student can request to work with a mentor
@@ -25,7 +26,9 @@ var userSchema = new Schema({
 	rating: Number,					//mentor only
 	reviews: [{ title: String,		//mentor only
 				username: String,
-				text: String }]  
+				rating: Number,
+				text: String,
+				reviewDate: Date }]  
 });
  
 userSchema.methods.verifyPassword = function(password, callback) {

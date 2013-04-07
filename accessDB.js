@@ -40,6 +40,9 @@ testuser.save(function(err) {
 	if (err) {throw err;}
 });
 */
+
+
+
 User.find(function(err, users){ console.log(users);} );
 
 
@@ -139,69 +142,118 @@ module.exports = {
   
   
   
-  //to-do: search mentors
-  
-  
-/*  
-  var testuser = new User({
-	username: 'bgaston',
-	hash:'pass',
-	userType: 'student',				//'mentor' or 'student'
-	fname: 'Bryan',
-	lname: 'Gaston',
-	picUrl: 'https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash4/c33.33.411.411/s160x160/321163_10100317922487608_2052502439_n.jpg'					//URL of profile pic
-	lessonIds: [ObjectId],			//mentor only - all lessons the mentor is teaching
-	mentorRequests: [{				//student can request to work with a mentor
-		studentId: ObjectId,
-  		mentorId: ObjectId,
-  		text: String,
-  		requestDate: Date
-  	}],
-  	mentorIds: [ObjectId],			//if student, these are all the associated mentors
-  	lessonIds: [ObjectId],			//if mentor, these are all associated students
-	topicTags: [String],
-	rating: float,					//mentor only
-	reviews: [{ title: String,		//mentor only
-				username: String,
-				text: String }]  
-*/
+	//to-do: this probably doesn't work if any of the values is null...
+	findMentor: function(mentorInfo, callback){
+		User.find({
+			username: mentorInfo.username, 
+			fname: mentorInfo.fname,
+			lname: mentorInfo.lname,
+			rating: { $gte: mentorInfo.rating },
+			topic: { $in: mentorInfo.topics }
+		}, function (err, mentors){
+			if (!err){
+				callback(null, mentors);
+			}
+			else callback(err);
+		}).lean();
+	}
 
 /*
-    updateUser: function(userInfo, callback){
-		User.update({username: userInfo.username},
-				 {$addToSet: {  },
-			 
-				 },
-				 {upsert:true}, 
-				 function(err, data) { 
-					if(err){
-						callback(err,null,null);
-					} 
+	addReview: function(studentUsername, mentorUsername, title, text, rating, reviewDate){
+		User.update({ username: mentorUsername }, 
+			{ $push: { reviews: [{ 
+				title: title,
+				username: studentUsername,
+				text: text,
+				rating: rating,
+				reviewDate: new Date(); }] } }, 
+			{ upsert: true }, function(err) {
+				if (!err){
+					User.aggregate([
+						{ $group: {
+							title: '$reviews.title',
+							ratingAvg: { $avg: '$reviews.rating'}
+						}}
+						], function (err, results) {
+							if (err) {
+								console.error(err);
+							} else {
+								//to-do: update mentor's rating
+								console.log(results);
+							}
+						}
+					);
 				}
-		);
+				else console.log(err);
+			});	
+	},
+*/	
+	addTopicTag: function(username, newTags){
+		User.update({ username: username }, 
+			{ $addToSet: { topicTags: newTags } }, 
+			{ upsert: true });	
+	},
+	
+	addMentor: function(studentUsername, mentorUsername){
+		User.update({ username: studentUsername }, 
+			{ $push: { mentors: mentorUsername } }, 
+			{ upsert: true });	
+	},
+	
+	addMentorRequest: function(studentUsername, mentorUsername, text){
+		//add mentor request to student record
+		User.update({ username: studentUsername }, 
+			{ $push: { mentorRequests: [{ 
+				studentUsername: studentUsername,
+				mentorUsername: mentorUsername,
+				text: text,
+				requestDate: new Date(); }] } }, 
+			{ upsert: true });
+		
+		//add mentor request to mentor record
+		User.update({ username: mentorUsername }, 
+			{ $push: { mentorRequests: [{ 
+				studentUsername: studentUsername,
+				mentorUsername: mentorUsername,
+				text: text,
+				requestDate: new Date(); }] } }, 
+			{ upsert: true });		
+	},
 
-    User.findOne({username: userInfo.username}, function (err, user){
-      if(user){
-		  var newUser = new User({
-					username: userInfo.username,
-					hash: userInfo.password,
-					userType: userInfo.userType,
-					fname: userInfo.fname,
-					lname: userInfo.lname,
-					picUrl: userInfo.picUrl,
-					topicTags: userInfo.topicTags
-				  });
-			newUser.save(function(err) {
-			  if (err) {throw err;}
-			  callback(null, userInfo);
-			});
-        callback(null, null, "User info updated.");
-      } else {
-		callback(null, null, "User not found!");
-      }
-    });
-  },
-*/
+	updatePassword: function(username, newValue){
+		User.update({ username: username }, { hash: newValue }).exec();
+	},
+	
+	updateFname: function(username, newValue){
+		User.update({ username: username }, { fname: newValue }).exec();
+	},	
+		
+	updateLname: function(username, newValue){
+		User.update({ username: username }, { lname: newValue }).exec();
+	},		
+		
+	updatePicUrl: function(username, newValue){
+		User.update({ username: username }, { picUrl: newValue }).exec();
+	},		
+		
+	addLesson: function(username, newValue){
+		User.update({ username: username }, {$addToSet: { lessonIds: newValue }}, {upsert:true}).exec();
+	},		
+		
+	//for bulk updating user info from "update profile" page	
+    updateUser: function(userInfo, callback){    
+      User.update({ username: userInfo.username }, { 
+		hash: userInfo.password,
+		fname: userInfo.fname,
+		lname: userInfo.lname,
+		bio: userInfo.bio,
+		picUrl: userInfo.picUrl,
+		topicTags: userInfo.topicTags
+      }, function (err, numberAffected, raw) {
+		  if (err) callback(err);
+		  else callback(null, null, "Updated info for " + userInfo.username);
+		}).exec();
+  	},
 
   // disconnect from database
   closeDB: function(){

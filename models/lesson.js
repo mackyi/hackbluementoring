@@ -7,6 +7,8 @@ var collection = 'lesson';
 
 var lessonSchema = new Schema({
 	name: String,
+	mentorUsername: String,
+	studentUsername: String,
 	dateStarted: Date,
 	assignments: [Assignment],
 	chats: {

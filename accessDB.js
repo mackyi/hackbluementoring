@@ -158,6 +158,8 @@ module.exports = {
 					query.exec(function(err,mentor){
 						if (!err){
 							//get an array of all ratings
+// 							mentor.reviews.l
+							
 						}
 						else console.log(err);
 					});
@@ -175,7 +177,7 @@ module.exports = {
 				callback(err);
 			}
 		});
-	}
+	},
 	
 // 	findAssignments: function(lessonId, callback){
 // 		Assignment.find({lessonId: lessonId}, function(err, assignments){

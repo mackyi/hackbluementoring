@@ -92,17 +92,19 @@ module.exports = function(app){
 
 	app.post('/findMentors', function(req, res){
 		mentorInfo = {
-			areas: req.param('areas').split(","),
+			topics: req.param('areas').split(","),
 			minRating: req.param('minrating'),
 			firstName: req.body.firstname,
-			lastName: req.body.lastname
+			lastName: req.body.lastname,
+			username: '',
 		}
 		console.log(mentorInfo);
 		console.log(req.body);
 
-		// db.findmentors(mentorInfo, function(err, mentors){
-		// 		mentors.topicTags= mentors.topicTags.toString();
-		// })
+		db.findMentor(mentorInfo, function(err, mentors){
+			console.log(mentors);
+				mentors.topicTags= mentors.topicTags.toString();
+		})
 		mentors ={
 			mentor1: {
 				fname: 'Mack',

@@ -128,7 +128,7 @@ module.exports = {
 			fname: mentorInfo.fname,
 			lname: mentorInfo.lname,
 			rating: { $gte: mentorInfo.rating },
-			topic: { $in: mentorInfo.topics }
+			topics: { $in: mentorInfo.topics }
 		}, function (err, mentors){
 			if (!err){
 				callback(null, mentors);
@@ -188,7 +188,7 @@ module.exports = {
 	
 	addAssignmentComment: function(assignmentId, commentObject){
 		Assignment.update({ _id: assignmentId },
-			{ comments: {$push: { commentObject } } }
+			{comments: {$push: commentObject } }
 			).exec(function(err){
 				if (err) console.log(err);
 			});
@@ -196,7 +196,7 @@ module.exports = {
 	
 	addLessonChat: function(lessonId, chatObject){
 		Lesson.update({ _id: lessonId },
-			{ chats: {$push: { chatObject } } }
+			{ chats: {$push: chatObject} }
 			).exec(function(err){
 			if (err) console.log(err);
 		});

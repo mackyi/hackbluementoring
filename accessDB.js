@@ -144,6 +144,11 @@ module.exports = {
   
 	//to-do: this probably doesn't work if any of the values is null...
 	findMentor: function(mentorInfo, callback){
+//    var userInfo;
+
+    // for each property in mentorInfo 
+    //   if value!=''
+    //     userInfo.property = 
 		User.find({
 			username: mentorInfo.username, 
 			fname: mentorInfo.fname,
@@ -207,7 +212,11 @@ module.exports = {
 				studentUsername: studentUsername,
 				mentorUsername: mentorUsername,
 				text: text,
+<<<<<<< HEAD
 				requestDate: new Date() }] } }, 
+=======
+				requestDate: new Date()}] } }, 
+>>>>>>> master
 			{ upsert: true });
 		
 		//add mentor request to mentor record
@@ -216,7 +225,11 @@ module.exports = {
 				studentUsername: studentUsername,
 				mentorUsername: mentorUsername,
 				text: text,
+<<<<<<< HEAD
 				requestDate: new Date() }] } }, 
+=======
+				requestDate: new Date()}] } }, 
+>>>>>>> master
 			{ upsert: true });		
 	},
 

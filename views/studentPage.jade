@@ -2,21 +2,10 @@ extends user-layout
 mixin lesson(lesson)
 	tr
 		td #{lesson.name} 
-		td #{lesson.student}
+		td #{lesson.mentor}
 		td #{lesson.dateStarted}
-		td 
-			a.button.btn(href=mentorurl) Go To Page
-
 block type
-	h3 Mentor in #{locals.pageof.topicTags}
-
-block rating
-	h4.pull-right Rating: 
-		-if(typeof locals.pageof.rating!=='undefined')
-			p #{locals.pageof.rating}
-		-else
-			p None
-
+	h3 Student
 block connections
 	h2 Lessons
 		- if(typeof locals.pageof.lessons!== 'undefined' && locals.pageof.lessons.length>0)
@@ -25,12 +14,12 @@ block connections
 				thead
 					tr
 						th Name
-						th Student
+						th Mentor
 						th Date Started
 				tbody
 					-each lesson in lessons
 						mixin lesson(lesson)
 		- else
-			p This mentor has not mentored anyone.
+			p This student has not been mentored by anyone.
 		
 		

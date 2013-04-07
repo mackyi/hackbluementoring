@@ -2,20 +2,6 @@ var passport = require('passport');
 
 var db = require('./accessDB');
 
-function trunc(long, next){
-	if(long.length>10)
-		while(long.length>10){
-			if(long.lastIndexOf(',')===-1){
-				long =long.substring(0, 10)+ '...';
-				break;
-			}
-			long = long.substring(0, lastIndexOf(','));
-		}
-		long=long+'...';
-
-	return next(null, long)
-}
-
 module.exports = function(app){
 	app.get('/', function(req, res) {
 		console.log(req.user);
@@ -44,15 +30,12 @@ module.exports = function(app){
 			if(!user) res.render('home.jade', {locals: {
 				user: req.user, message: 'User page does not exist'
 			}})
-			if(user.userType == 'mentor'){
+			else if(user.userType == 'mentor'){
 				console.log(user.topicTags);
 				user.topicTags = user.topicTags.toString();
-				trunc(user.topicTags, function(err, short){
-					user.shortTags = short;
-					res.render('mentorPage.jade', {locals: {
+				res.render('mentorPage.jade', {locals: {
 					user: req.user, pageof: user
 				}})
-				});
 				
 			} else{
 				res.render('studentPage.jade', {locals: {

@@ -113,6 +113,14 @@ module.exports = {
   
 	//to-do: this probably doesn't work if any of the values is null...
 	findMentor: function(mentorInfo, callback){
+	
+mentorInfo = {
+			topics: 'biology',
+			minRating: '3',
+			fname: '',
+			lname: '',
+			username: '',
+		}
 /*		var userInfo;
 		for (var property in mentorInfo){
 			if (mentorInfo[property] != ''){
@@ -123,17 +131,21 @@ module.exports = {
     // for each property in mentorInfo 
     //   if value!=''
     //     userInfo.property = 
-		User.find({
-			username: mentorInfo.username, 
-			fname: mentorInfo.fname,
-			lname: mentorInfo.lname,
-			rating: { $gte: mentorInfo.rating },
-			topics: { $in: mentorInfo.topics }
+		User.find({$or: [
+			{username: mentorInfo.username}, 
+			{fname: mentorInfo.fname},
+			{lname: mentorInfo.lname},
+			{rating: { $gte: mentorInfo.minRating} }]
+			//{topicTags: { $in: mentorInfo.topics} }]
 		}, function (err, mentors){
 			if (!err){
+				console.log('mentors from access: ' + mentors);
 				callback(null, mentors);
 			}
-			else callback(err);
+			else{
+				callback(err);
+				console.log('errorrrr');
+			}	
 		}).lean();
 	},
 

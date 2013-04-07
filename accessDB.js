@@ -114,13 +114,6 @@ module.exports = {
 	//to-do: this probably doesn't work if any of the values is null...
 	findMentor: function(mentorInfo, callback){
 	
-mentorInfo = {
-			topics: 'biology',
-			minRating: '3',
-			fname: '',
-			lname: '',
-			username: '',
-		}
 /*		var userInfo;
 		for (var property in mentorInfo){
 			if (mentorInfo[property] != ''){
@@ -131,26 +124,25 @@ mentorInfo = {
     // for each property in mentorInfo 
     //   if value!=''
     //     userInfo.property = 
+    
 		User.find({$or: [
 			{username: mentorInfo.username}, 
 			{fname: mentorInfo.fname},
 			{lname: mentorInfo.lname},
-			{rating: { $gte: mentorInfo.minRating} }]
-			//{topicTags: { $in: mentorInfo.topics} }]
+			{rating: { $gte: mentorInfo.minRating} },
+			{topicTags: { $in: mentorInfo.topics } }]
 		}, function (err, mentors){
 			if (!err){
-				console.log('mentors from access: ' + mentors);
+				console.log(mentors);
 				callback(null, mentors);
 			}
 			else{
 				callback(err);
-				console.log('errorrrr');
 			}	
 		}).lean();
 	},
 
-/*
-	addReview: function(studentUsername, mentorUsername, title, text, rating, reviewDate){
+	addReview: function(studentUsername, mentorUsername, title, text, rating, reviewDate, callback){
 		User.update({ username: mentorUsername }, 
 			{ $push: { reviews: [{ 
 				title: title,
@@ -160,27 +152,21 @@ mentorInfo = {
 				reviewDate: new Date(); }] } }, 
 			{ upsert: true }, function(err) {
 				if (!err){
-					User.aggregate([
-						{ $group: {
-							title: '$reviews.title',
-							ratingAvg: { $avg: '$reviews.rating'}
-						}}
-						], function (err, results) {
-							if (err) {
-								console.error(err);
-							} else {
-								//to-do: update mentor's rating
-								console.log(results);
-							}
+					//update rating based on avg of review ratings
+					var query = User.find({ username: mentorUsername });
+					query.select('reviews');
+					query.exec(function(err,mentor){
+						if (!err){
+							//get an array of all ratings
 						}
-					);
+						else console.log(err);
+					});
 				}
 				else console.log(err);
 			});	
 	},
-*/	
 	
-	addAssignment: function(assignment, lesson){
+	addAssignment: function(assignment, lesson, callback){
 		Assignment.create({ 
 			name: assignment.name,
 			text: assignment.text,
@@ -198,7 +184,7 @@ mentorInfo = {
 		});	
 	},
 	
-	addAssignmentComment: function(assignmentId, commentObject){
+	addAssignmentComment: function(assignmentId, commentObject, callback){
 		Assignment.update({ _id: assignmentId },
 			{comments: {$push: commentObject } }
 			).exec(function(err){
@@ -206,7 +192,7 @@ mentorInfo = {
 			});
 	},
 	
-	addLessonChat: function(lessonId, chatObject){
+	addLessonChat: function(lessonId, chatObject, callback){
 		Lesson.update({ _id: lessonId },
 			{ chats: {$push: chatObject} }
 			).exec(function(err){
@@ -214,7 +200,7 @@ mentorInfo = {
 		});
 	},
 	
-	addLesson: function(lesson){
+	addLesson: function(lesson, callback){
 		Lesson.create({ 
 			name: lesson.name,
 			dateStarted: new Date(),
@@ -223,13 +209,15 @@ mentorInfo = {
 		});
 	},
 	
-	addMentor: function(studentUsername, mentorUsername){
+	addMentor: function(studentUsername, mentorUsername, callback){
 		User.update({ username: studentUsername }, 
 			{ $push: { mentors: mentorUsername } }, 
-			{ upsert: true }).exec();	
-	},
+			{ upsert: true }).exec(function(err,result){
+				if (err) callback(err);
+		});
+	},		
 	
-	addMentorRequest: function(studentUsername, mentorUsername, text){
+	addMentorRequest: function(studentUsername, mentorUsername, text, callback){
 		//add mentor request to student record
 		User.update({ username: studentUsername }, 
 			{ $push: { mentorRequests: { 
@@ -237,37 +225,52 @@ mentorInfo = {
 				mentorUsername: mentorUsername,
 				text: text,
 				requestDate: new Date() } } }, 
-			{ upsert: true }).exec();
+			{ upsert: true }).exec(function(err,result){
+			if (err) callback(err);
+		});
+	},		
 
 		
 		//add mentor request to mentor record
-		User.update({ username: mentorUsername }, 
+		User.update({ username: mentorUsername, callback }, 
 			{ $push: { mentorRequests: { 
 				studentUsername: studentUsername,
 				mentorUsername: mentorUsername,
 				text: text,
 				requestDate: new Date() } } }, 
-			{ upsert: true }).exec();		
-	},
+			{ upsert: true }).exec(function(err,result){
+				if (err) callback(err);
+		});
+	},		
 
-	updatePassword: function(username, newValue){
-		User.update({ username: username }, { hash: newValue }).exec();
-	},
+	updatePassword: function(username, newValue, callback){
+		User.update({ username: username }, { hash: newValue }).exec(function(err,result){
+			if (err) callback(err);
+		});
+	},		
 	
-	updateFname: function(username, newValue){
-		User.update({ username: username }, { fname: newValue }).exec();
-	},	
-		
-	updateLname: function(username, newValue){
-		User.update({ username: username }, { lname: newValue }).exec();
+	updateFname: function(username, newValue, callback){
+		User.update({ username: username }, { fname: newValue }).exec(function(err,result){
+			if (err) callback(err);
+		});
 	},		
 		
-	updatePicUrl: function(username, newValue){
-		User.update({ username: username }, { picUrl: newValue }).exec();
+	updateLname: function(username, newValue, callback){
+		User.update({ username: username }, { lname: newValue }).exec(function(err,result){
+			if (err) callback(err);
+		});
 	},		
 		
-	addLesson: function(username, newValue){
-		User.update({ username: username }, {$addToSet: { lessonIds: newValue }}, {upsert:true}).exec();
+	updatePicUrl: function(username, newValue, callback){
+		User.update({ username: username }, { picUrl: newValue }).exec(function(err,result){
+			if (err) callback(err);
+		});
+	},		
+		
+	addLesson: function(username, newValue, callback){
+		User.update({ username: username }, {$addToSet: { lessonIds: newValue }}, {upsert:true}).exec(function(err,result){
+			if (err) callback(err);
+		});
 	},		
 		
 	//for bulk updating user info from "update profile" page	

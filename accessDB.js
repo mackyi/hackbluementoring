@@ -1,8 +1,7 @@
 // Module dependencies
 var mongoose = require('mongoose');
-var bcrypt = require('bcrypt');
+// var bcrypt = require('bcrypt');
 // var scrypt = require("scrypt");
-var maxtime = 0.1;
 
 var passport = require('passport')
   , LocalStrategy = require('passport-local').Strategy;
@@ -55,22 +54,31 @@ module.exports = {
       if(user){
         callback(null, null, "Username taken");
       } else {
-        bcrypt.genSalt(10, function(err, salt) {
-          console.log(userInfo.password);
-          bcrypt.hash(userInfo.password, salt, function(err, pwdhash) {
-              if (!err) {
-              //pwdhash should now be stored in the database
-              var newUser = new User({
+        var newUser = new User({
                 username: userInfo.username,
-                hash: pwdhash
+                hash: userInfo.password
               });
-              newUser.save(function(err) {
-                if (err) {throw err;}
-                callback(null, userInfo);
-              });
-          }
-          });
-        });  
+        newUser.save(function(err) {
+          if (err) {throw err;}
+          callback(null, userInfo);
+        });
+
+        // bcrypt.genSalt(10, function(err, salt) {
+        //   console.log(userInfo.password);
+        //   bcrypt.hash(userInfo.password, salt, function(err, pwdhash) {
+        //       if (!err) {
+        //       //pwdhash should now be stored in the database
+        //       var newUser = new User({
+        //         username: userInfo.username,
+        //         hash: pwdhash
+        //       });
+        //       newUser.save(function(err) {
+        //         if (err) {throw err;}
+        //         callback(null, userInfo);
+        //       });
+        //   }
+        //   });
+        // });  
       }
     });
   },

@@ -25,7 +25,9 @@ app.configure(function(){
   app.use(express.bodyParser());
   app.use(express.cookieParser());
   app.use(express.methodOverride());
-
+  app.use(express.session({secret: 'lalaalalalaaa'}));
+  app.use(passport.initialize());
+  app.use(passport.session());
   app.use(app.router);
   app.use(stylus.middleware({
       src: __dirname + '/views'
@@ -35,9 +37,7 @@ app.configure(function(){
   ))
   app.use(express.static('public'));
 
-  app.use(express.session({secret: 'lalaalalalaaa'}));
-  app.use(passport.initialize());
-  app.use(passport.session());
+  
   
   
   

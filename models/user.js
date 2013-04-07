@@ -1,6 +1,6 @@
 var mongoose = require('mongoose'),
-    Schema = mongoose.Schema,
-    bcrypt = require('bcrypt');
+    Schema = mongoose.Schema;
+//    bcrypt = require('bcrypt');
 
 var collection = 'user';
 
@@ -10,10 +10,12 @@ var schema = new Schema({
 });
 
 schema.methods.verifyPassword = function(password, callback) {
-  bcrypt.compare(password, this.hash, function(err, res) {
-  	if(err) return callback(err, null);
-    return callback(err, res);
-  });
+	var res = this.password = password;
+	return callback(null, res);
+  // bcrypt.compare(password, this.hash, function(err, res) {
+  // 	if(err) return callback(err, null);
+  //   return callback(err, res);
+  // });
 };
 
 module.exports = mongoose.model(collection, schema);

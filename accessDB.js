@@ -168,6 +168,16 @@ module.exports = {
 			});	
 	},
 	
+	findAssignments: function(lessonId, callback){
+		Lesson.findById(lessonId, null, null, function(err, lesson){
+			if (!err){
+				Assignment.find({_id {$in: {lesson.assignments} } }, function(err,assignments){
+					callback(null, assignments);
+				});
+			}
+		});
+	},
+	
 	findLesson: function(lessonId, callback){
 		Lesson.findById(lessonId, null, null, function(err, lesson){
 			if (!err){

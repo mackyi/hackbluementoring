@@ -212,7 +212,11 @@ module.exports = {
 				studentUsername: studentUsername,
 				mentorUsername: mentorUsername,
 				text: text,
+<<<<<<< HEAD
 				requestDate: new Date()}] } }, 
+=======
+				requestDate: new Date() }] } }, 
+>>>>>>> 2f744882f598ae5cb2a941a3dcabde6567017175
 			{ upsert: true });
 		
 		//add mentor request to mentor record
@@ -221,7 +225,11 @@ module.exports = {
 				studentUsername: studentUsername,
 				mentorUsername: mentorUsername,
 				text: text,
+<<<<<<< HEAD
 				requestDate: new Date()}] } }, 
+=======
+				requestDate: new Date() }] } }, 
+>>>>>>> 2f744882f598ae5cb2a941a3dcabde6567017175
 			{ upsert: true });		
 	},
 

@@ -1,13 +1,14 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
-    ObjectId = Schema.ObjectId;
+    ObjectId = Schema.ObjectId,
+    Assignment = require('./assignments');
 
 var collection = 'lesson';
 
 var lessonSchema = new Schema({
 	name: String,
 	dateStarted: Date,
-	assignments: [ObjectId],
+	assignments: [Assignment],
 	chats: {
 		username: String,
 		date: Date,

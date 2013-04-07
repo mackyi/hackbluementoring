@@ -21,7 +21,8 @@ var userSchema = new Schema({
   		requestDate: Date
   	}],
   	mentors: [String],				//if student, these are all the associated mentors
-  	lessonIds: [ObjectId],			//if mentor, these are all associated students
+  	students: [String],				//if mentor, these are all associated students
+  	lessonIds: [ObjectId],			//if mentor, these are all associated lessons
 	topicTags: [String],
 	rating: Number,					//mentor only
 	reviews: [{ title: String,		//mentor only

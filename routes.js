@@ -157,7 +157,7 @@ module.exports = function(app){
 		res.render('findMentors.jade', {locals:{results: mentors, user: req.user}})
 	}),
 
-	app.get('/lesson/:lid', function(req, res){
+	app.get('/lesson/:lid', ensureAuthenticated, function(req, res){
 		lid = req.params.lid;
 		db.findLesson(lid, function(err, lesson){
 			res.render('lesson.jade', {locals: { user: req.user, lesson: lesson}})
@@ -175,7 +175,7 @@ module.exports = function(app){
 			res.redirect('/lesson/:lid');
 		})
 	})
-	
+
 	app.get('/writeRequest/:toname', ensureAuthenticated, function(req, res){
 		res.render('writeRequest.jade', {locals: {user: req.user, mentorname: req.param('toname')}})
 	}),
@@ -193,8 +193,8 @@ module.exports = function(app){
 
 	app.get('/acceptRequest/:fromname/:toname', function(req, res){
 		lessonInfo = {
-			studentName : req.params.fromname,
-			mentorName : req.params.toname,
+			studentUsername : req.params.fromname,
+			mentorUsername : req.params.toname,
 			name : req.params.toname +req.params.fromname
 		}
 		db.createLesson(lessonInfo, function(err, lessonid){

@@ -17,22 +17,27 @@ block content
 							h2 Mentored by #{lesson.mentorUsername} and Taught to #{lesson.studentUsername}
 		.profilebody
 			.row
-				.span7
-					h1 Assignments
+				.span3
+					h1 Give Assignments
+
 					actionurl = '/addAssignment/' + lesson.lessonId
 					form#giveAssignment(action= actionurl, method='POST')
 						span3
+							label(for='name') Assignment Name:
+							input#name(type='text', name = 'name')
 							label(for='text') Assignment Text:
 							textarea#text(cols='100', rows='5', name='text', type='text')
 						.submit
 							button.btn(type='submit') Assign
+				.span4
+					h1 View Assignments
 					assignments = lesson.assignments
 					mixin format(assignment)
 						.row
 							.span6
 								h3 assignment.name
 								p assignment.text
-					-if(false)
+					-if(typeof locals.lesson.assignments !== 'undefined' && locals.lesson.assignments !== null)
 							-each assignment in assignments
 								mixin format(assignment)
 					-else

@@ -222,6 +222,8 @@ module.exports = {
 	createLesson: function(lesson, callback){
     var l = new Lesson({
       name: lesson.name,
+      mentorUsername: lesson.mentorUsername,
+      studentUsername: lesson.studentUsername,
       dateStarted: new Date(),
       assignments: null,
       chats: null

@@ -2,6 +2,20 @@ var passport = require('passport');
 
 var db = require('./accessDB');
 
+function trunc(long, next){
+	if(long.length>10)
+		while(long.length>10){
+			if(long.lastIndexOf(',')===-1){
+				long =long.substring(0, 10)+ '...';
+				break;
+			}
+			long = long.substring(0, lastIndexOf(','));
+		}
+		long=long+'...';
+
+	return next(null, long)
+}
+
 module.exports = function(app){
 	app.get('/', function(req, res) {
 		console.log(req.user);
@@ -27,25 +41,37 @@ module.exports = function(app){
 		var username = req.params.uid;
 		db.findByUsername(username, function(err, user){
 			if(err) return err
-			if(!user) res.render('/', {locals: {
+			if(!user) res.render('home.jade', {locals: {
 				user: req.user, message: 'User page does not exist'
 			}})
-			res.render('register.jade', {locals:{ message: user.hash}})
-			// if(user.userType === 'mentor'){
-			// 	res.render('mentorPage.jade' {locals: {
-			// 		user: req.user, pageof: user
-			// 	}})
-			// } else{
-			// 	res.render('studentPage.jade' {locals: {
-			// 		user: req.user, pageof: user
-			// 	}})
-			// }
+			if(user.userType == 'mentor'){
+				console.log(user.topicTags);
+				user.topicTags = user.topicTags.toString();
+				trunc(user.topicTags, function(err, short){
+					user.shortTags = short;
+					res.render('mentorPage.jade', {locals: {
+					user: req.user, pageof: user
+				}})
+				});
+				
+			} else{
+				res.render('studentPage.jade', {locals: {
+					user: req.user, pageof: user
+				}})
+			}
 		})
 	})
 	app.post('/register', function(req, res){
+		console.log(req.body)
 		db.saveUser({
 			password: req.param('password'),
-			username: req.param('username')}
+			username: req.param('username'),
+			userType: req.param('type'),
+			fname: req.param('firstName'),
+			lname: req.param('lastName'),
+			picUrl: req.param('picUrl'),
+			topicTags: req.param('topicTags')
+			}
 			, function(err,docs, msg) {
 				if(docs == null){
 					res.render('register.jade', {locals: {
@@ -86,14 +112,14 @@ module.exports = function(app){
 		console.log(req.body);
 
 		// db.findmentors(mentorInfo, function(err, mentors){
-		// 		mentors.areas = mentors.areas.toString();
+		// 		mentors.topicTags= mentors.topicTags.toString();
 		// })
 		mentors ={
 			mentor1: {
 				fname: 'Mack',
 				lname: 'Yi',
 				rating: '0',
-				areas: 'math, physics, computer science',
+				topicTags: 'math, physics, computer science',
 				picUrl: 'http://sphotos-a.xx.fbcdn.net/hphotos-ash3/532386_4200069688061_127509570_n.jpg',
 				username: 'mackyi'
 			}

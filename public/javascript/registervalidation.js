@@ -1,4 +1,15 @@
 $(function($){
+	$('#ifmentor').hide();
+
+	$('.radio').change(function(){
+		if($('#mentor').is(':checked')){
+		$('#ifmentor').show();
+	} else{
+		$('#ifmentor').val('');
+		$('#ifmentor').hide();
+	}
+	})
+	
 		   
 	// simple jQuery validation script
 	$('#register').submit(function(){
@@ -6,7 +17,6 @@ $(function($){
 		var valid = true;
 		var errormsg = 'This field is required!';
 		var errorcn = 'error';
-		
 		$('.' + errorcn, this).remove();			
 		
 		$('.required', this).each(function(){
@@ -26,6 +36,16 @@ $(function($){
 		if($('#register_password').val() != $('#confirm_password').val()){
 			var parent = $('#confirm_password').parent();
 			var msg = "Make sure password and confirm password match";
+			$('<span class="'+ errorcn +'">'+ msg +'</span>')
+					.appendTo(parent)
+					.fadeIn('fast')
+					.click(function(){ $(this).remove(); })
+			valid = false;
+		}
+
+		if(!$('#mentor').is(':checked') && !$('#student').is(':checked')){
+			var parent = $('#mentor').parent();
+			var msg = "You must select an account type";
 			$('<span class="'+ errorcn +'">'+ msg +'</span>')
 					.appendTo(parent)
 					.fadeIn('fast')

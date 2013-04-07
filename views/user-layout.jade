@@ -1,1 +1,15 @@
 extends layout
+block content
+	.container
+		.spacer
+		.profilehead
+			.row
+				.span3
+					picUrl = locals.pageof.picUrl
+					img.img-polaroid(src=picUrl)
+				.span8
+					.spacer
+					.spacer
+					.pageheader
+						h1 #{locals.pageof.fname} #{locals.pageof.lname} <small> (#{locals.pageof.username}) </small>
+					block type

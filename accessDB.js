@@ -41,8 +41,6 @@ testuser.save(function(err) {
 });
 */
 
-
-
 User.find(function(err, users){ console.log(users);} );
 
 
@@ -190,34 +188,34 @@ module.exports = {
 */	
 	addTopicTag: function(username, newTags){
 		User.update({ username: username }, 
-			{ $addToSet: { topicTags: newTags } }, 
-			{ upsert: true });	
+			{ $addToSet: { topicTags: { $each: newTags } } }, 
+			{ upsert: true }).exec();	
 	},
 	
 	addMentor: function(studentUsername, mentorUsername){
 		User.update({ username: studentUsername }, 
 			{ $push: { mentors: mentorUsername } }, 
-			{ upsert: true });	
+			{ upsert: true }).exec();	
 	},
 	
 	addMentorRequest: function(studentUsername, mentorUsername, text){
 		//add mentor request to student record
 		User.update({ username: studentUsername }, 
-			{ $push: { mentorRequests: [{ 
+			{ $push: { mentorRequests: { 
 				studentUsername: studentUsername,
 				mentorUsername: mentorUsername,
 				text: text,
-				requestDate: new Date() }] } }, 
-			{ upsert: true });
+				requestDate: new Date() } } }, 
+			{ upsert: true }).exec();
 		
 		//add mentor request to mentor record
 		User.update({ username: mentorUsername }, 
-			{ $push: { mentorRequests: [{ 
+			{ $push: { mentorRequests: { 
 				studentUsername: studentUsername,
 				mentorUsername: mentorUsername,
 				text: text,
-				requestDate: new Date() }] } }, 
-			{ upsert: true });		
+				requestDate: new Date() } } }, 
+			{ upsert: true }).exec();		
 	},
 
 	updatePassword: function(username, newValue){

@@ -1,0 +1,26 @@
+extends layout 
+block head
+	title Find Mentors
+block content
+	.container
+		.spacer
+		h2 Search Parameters:
+		form#search(action='/searchMentors', method='POST')
+			.row
+				.span3.offset1	
+					label(for='firstname') First Name:
+					input#firstname(type='text', name='firstname', class="field")
+				.span3
+					label(for='lastname') Last Name: 
+					input#lastname(type='text', name='lastname', class="field")
+			.row
+				.span3.offset1
+					label(for='areas') Subject Areas (Separate with commas): 
+					input#areas(type='text', name='areas', class="field")
+			.row
+				.span3.offset1
+					label(for='minRating') Minimum Rating(out of 5)
+					input#minRating(type="number", min="0", max="5", step="0.5")
+				.span3.offset2.submit
+					button.btn.btn-large(type='submit') Search!
+		.searchResults

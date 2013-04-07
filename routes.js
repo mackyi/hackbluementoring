@@ -4,6 +4,7 @@ var db = require('./accessDB');
 
 module.exports = function(app){
 	app.get('/', function(req, res) {
+		console.log(req.user);
 		res.render('home.jade', {user: req.user});
 	}),
 
@@ -15,6 +16,11 @@ module.exports = function(app){
 	app.get('/login', function(req, res){
 		res.render('login.jade', {locals:{
 				user: req.user}});
+	}),
+
+	app.get('/findMentors', function(req, res){
+		res.render('findMentors.jade', {locals:{
+			user: req.user}});
 	}),
 
 	app.post('/register', function(req, res){
@@ -43,23 +49,44 @@ module.exports = function(app){
 	      return res.redirect('/');
 	    });
 	  })(req, res, next);
-	});
+	}),
 
 	app.get('/logout', function(req, res){
 	     req.logout();
 	     res.redirect('/');
-	})
+	}),
 
 	app.post('/searchMentors', function(req, res){
 		parameters = req.param('searchParameters');
-		minRating = parameters.minRating;
-		firstName = parameters.firstname;
-		lastName = parameters.lastname;
-		areas = parameters.areas.split(",");
+		mentorInfo = {
+			minRating: req.param('minRating'),
+			firstName: req.param('firstName'),
+			lastName: req.param('lastName'),
+			areas: req.param('areas').split(",")
+		}
+		db.findmentors(mentorInfo, function(err, mentors){
+			res.send(JSON.stringify(mentors));
+		})
+	}),
+
+
+	app.post('/sendRequest/:userid', function(req, res){
+		parameters = req.param('requestParameters'),
+		requestInfo = {
+			senderID: req.user._id,
+			receiverID: req.params.userid,
+			date: new Date(),
+			text: parameters.text,
+		}
+		db.saveRequest(requestInfo, function(err, success){
+			if(success){
+				res.send(JSON.stringify({message:'Request successful'}));
+			}
+		})
+	}),
+
+	app.post('/acceptRequest/', function(req, res){
+
 	})
-
-	app.post('/searchStudents', function(req, res){
-
-	}
 }
 	

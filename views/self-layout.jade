@@ -17,10 +17,7 @@ block content
 							.pageheader
 								h1 #{locals.pageof.fname} #{locals.pageof.lname} <small> (#{locals.pageof.username}) </small>
 							block type
-						.span2.pull-right
-							h4 Request Tutoring?
-							requesturl = '/writeRequest/' + locals.pageof.username
-							a.button.btn(href=requesturl) Make Request
+						block tutoring
 		.profilebody
 			ul.nav.nav-pills#myTab
 				li 
@@ -60,16 +57,10 @@ block content
 					.row
 						.span4.offset1
 							h2 Incoming Requests
-							requests = locals.user.mentorRequests
-							mixin format(request)
-								.row
-									accepturl = '/acceptRequest/' + request.studentUsername + '/' + request.mentorUsername
-									p from: #{request.studentUsername}
-									a.button.btn(href=accepturl) Accept Request
-							-each request in requests 
-								mixin format(request)
+							block incoming
 						.span4
 							h2 Pending Requests
+							block pending
 				.tab-pane.fade#settings
 					.row
 						.span6.offset1

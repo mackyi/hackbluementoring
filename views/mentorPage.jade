@@ -16,7 +16,11 @@ block rating
 			p #{locals.pageof.rating}
 		-else
 			p None
-
+block tutoring
+	.span2.pull-right
+		h4 Request Tutoring?
+		requesturl = '/writeRequest/' + locals.pageof.username
+		a.button.btn(href=requesturl) Make Request
 block connections
 	h2 Lessons
 	- if(typeof locals.pageof.lessons!== 'undefined' && locals.pageof.lessons.length>0)

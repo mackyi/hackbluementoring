@@ -18,7 +18,7 @@ block content
 		.profilebody
 			.row
 				.span3
-					h1 Give Assignments
+					h1 Post
 
 					actionurl = '/addAssignment/' + lesson._id
 					form#giveAssignment(action= actionurl, method='POST')
@@ -30,7 +30,7 @@ block content
 						.submit
 							button.btn(type='submit') Assign
 				.span7
-					h1 View Assignments
+					h1 View 
 					assignments = locals.assignments
 					mixin format(assignment)
 						.row

@@ -8,8 +8,8 @@ block type
 	h3 Student
 block connections
 	h2 Lessons
-	- if(typeof locals.pageof.lessons!== 'undefined' && locals.pageof.lessons.length>0)
-		lessons = locals.pageof.lessons
+	- if(typeof locals.lessons!== 'undefined')
+		lessons = locals.lessons
 		table.table
 			thead
 				tr

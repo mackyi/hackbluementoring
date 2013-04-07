@@ -45,7 +45,7 @@ module.exports = function(app){
 							page = 'mentorSelf.jade'
 						} else {
 							page = 'mentorPage.jade'
-					}				
+						}				
 					} else{
 						if(req.user && user.username === req.user.username){
 							page ='studentSelf.jade'
@@ -152,13 +152,14 @@ module.exports = function(app){
 		db.findMentor(mentorInfo, function(err, mentors){
 			console.log(mentors);
 //			mentors.topicTags= mentors.topicTags.toString();
+//			res.render('findMentors.jade', {locals:{results: mentors, user: req.user}})
 		})
 		mentors ={
 			mentor1: {
 				fname: 'Mack',
 				lname: 'Yi',
 				rating: '0',
-				topicTags: 'math, physics, computer science',
+				topicTags: 'Nothing, Sleeping, Chemistry, Math, Algebra',
 				picUrl: 'http://sphotos-a.xx.fbcdn.net/hphotos-ash3/532386_4200069688061_127509570_n.jpg',
 				username: 'mackyi'
 			}
@@ -204,6 +205,9 @@ module.exports = function(app){
 		})
 	}),
 
+	app.get('/about', function(req, res){
+		res.render('about.jade')
+	})
 	app.get('/acceptRequest/:fromname/:toname', function(req, res){
 		lessonInfo = {
 			studentUsername : req.params.fromname,
@@ -214,8 +218,8 @@ module.exports = function(app){
 			if(err) return res.redirect('/')
 			console.log(lessonid)
 			console.log(req.params.toname)
-			db.addLesson(req.params.toname, lessonid, function(){
-				db.addLesson(req.params.fromname, lessonid, function(){
+			db.addLesson(req.params.fromname, lessonid, function(){
+				db.addLesson(req.params.toname, lessonid, function(){
 					res.redirect('/user/' + req.params.toname)
 				})
 			})

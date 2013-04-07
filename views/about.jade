@@ -1,0 +1,40 @@
+extends layout
+block head
+	title About DreamEdu
+	link(rel="stylesheet", href="/css/pagescroller.css")
+block content
+	.spacer
+	.spacer
+	.row
+		.span7.offset2
+			h1 About
+			ul.nav.nav-pills.unstyled#nav.pageScrollerNav(style="position: fixed, margin-top: 40px")
+					li.active: a.black(href="#") 1
+					li: a.black(href="#") 2
+					li: a.black(href="#") 3
+					li: a.black(href="#") Go
+	.container
+		.row
+			.span12
+				#wrapper
+					#main
+						.section
+							.span5
+								h1 find mentors. 
+						.section
+							.span5
+								h1 even if you're really lazy
+						.section 
+							.span5
+								h1 or if your mentor is really lazy
+						.section 
+							a.btn(href='/register') Register.
+
+block scripts
+	script(src="/javascript/jquery.pagescroller.lite.js")
+	script
+		$(document).ready(function(){
+			$('body').pageScroller({
+				navigation: '#nav'
+			});
+		});

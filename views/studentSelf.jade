@@ -1,3 +1,20 @@
 extends self-layout
 block lessons
-	
+
+block type
+	h3 Student
+
+block connections
+	h2 Lessons
+	p Not public.
+
+block pending
+	requests = locals.user.mentorRequests
+		mixin format(request)
+			.row
+				.box
+					accepturl = '/acceptRequest/' + request.studentUsername + '/' + request.mentorUsername
+					p to: #{request.mentorUsername}
+					p message: #{request.text}
+		-each request in requests 
+			mixin format(request)

@@ -1,15 +1,26 @@
 var mongoose = require('mongoose'),
-    Schema = mongoose.Schema;
+    Schema = mongoose.Schema,
+    ObjectId = Schema.ObjectId;
 //    bcrypt = require('bcrypt');
 
 var collection = 'user';
 
-var schema = new Schema({
+var userSchema = new Schema({
   username: { type: String, unique: true},
-  hash:{type: String}
+  hash:{type: String},
+  fname: String,
+  lname: String,
+  picUrl: String,
+  lessonIds: [ObjectId],
+  mentorRequests: [{
+  	studentId: ObjectId,
+  	mentorId: ObjectId,
+  	text: String,
+  	requestDate: Date
+  }]
 });
-
-schema.methods.verifyPassword = function(password, callback) {
+ 
+userSchema.methods.verifyPassword = function(password, callback) {
 	var res = this.password = password;
 	return callback(null, res);
   // bcrypt.compare(password, this.hash, function(err, res) {
@@ -18,4 +29,4 @@ schema.methods.verifyPassword = function(password, callback) {
   // });
 };
 
-module.exports = mongoose.model(collection, schema);
+module.exports = mongoose.model(collection, userSchema);

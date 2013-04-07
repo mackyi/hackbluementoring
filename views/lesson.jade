@@ -1,27 +1,20 @@
 extends layout
 block content
-lesson = locals.lesson;
 	.container
+		lesson = locals.lesson;
 		.spacer
 		.profilehead
 			.row
 				.span3
-					picUrl = locals.pageof.picUrl
+					picUrl = locals.user.picUrl
 					img.img-polaroid(src=picUrl)
 				.span8
-					.row 
-						.span2.pull-right
-							block rating
 					.row	
 						.spacer
 						.span5
 							.pageheader
-								h1 #{locals.pageof.fname} #{locals.pageof.lname} <small> (#{locals.pageof.username}) </small>
-							block type
-						.span2.pull-right
-							h4 Request Tutoring?
-							requesturl = '/writeRequest/' + locals.pageof.username
-							a.button.btn(href=requesturl) Make Request
+								h1 Lesson Name: #{lesson.name} 
+							h2 Mentored by #{lesson.mentorUsername} and Taught to #{lesson.studentUsername}
 		.profilebody
 			.row
 				.span7

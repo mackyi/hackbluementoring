@@ -36,11 +36,6 @@ app.configure(function(){
     }
   ))
   app.use(express.static('public'));
-
-  
-  
-  
-  
 });
 
 app.configure('development', function(){

@@ -158,6 +158,8 @@ module.exports = {
 					query.exec(function(err,mentor){
 						if (!err){
 							//get an array of all ratings
+							var ratings = new Array();
+							
 						}
 						else console.log(err);
 					});

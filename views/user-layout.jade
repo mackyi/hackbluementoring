@@ -8,8 +8,24 @@ block content
 					picUrl = locals.pageof.picUrl
 					img.img-polaroid(src=picUrl)
 				.span8
-					.spacer
-					.spacer
-					.pageheader
-						h1 #{locals.pageof.fname} #{locals.pageof.lname} <small> (#{locals.pageof.username}) </small>
-					block type
+					.row 
+						.span8
+							block rating
+					.row	
+						.span8
+							.spacer
+							.pageheader
+								h1 #{locals.pageof.fname} #{locals.pageof.lname} <small> (#{locals.pageof.username}) </small>
+							block type
+		.profilebody
+			.row
+				.span4
+					h2 Bio
+					p #{locals.pageof.bio}
+				.span4
+					block connections
+			.row
+				.span8
+					h2 Reviews
+
+				

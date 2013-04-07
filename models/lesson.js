@@ -10,7 +10,7 @@ var lessonSchema = new Schema({
 	mentorUsername: String,
 	studentUsername: String,
 	dateStarted: Date,
-	assignments: [Assignment],
+	assignments: [ObjectId],
 	chats: {
 		username: String,
 		date: Date,

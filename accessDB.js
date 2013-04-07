@@ -223,12 +223,7 @@ module.exports = {
 				studentUsername: studentUsername,
 				mentorUsername: mentorUsername,
 				text: text,
-<<<<<<< HEAD
-				requestDate: new Date()}] } }, 
-=======
-
-				requestDate: new Date()} } }, 
->>>>>>> remove extra bracket
+				requestDate: new Date() } } }, 
 			{ upsert: true }).exec();		
 	},
 

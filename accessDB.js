@@ -142,11 +142,13 @@ module.exports = {
   
 	//to-do: this probably doesn't work if any of the values is null...
 	findMentor: function(mentorInfo, callback){
-	/*
+/*		var userInfo;
 		for (var property in mentorInfo){
-			if property
+			if (mentorInfo[property] != ''){
+				userInfo.property = mentorInfo.property;
+			}
 		}
-		*/
+*/
     // for each property in mentorInfo 
     //   if value!=''
     //     userInfo.property = 

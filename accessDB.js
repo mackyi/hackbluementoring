@@ -156,7 +156,7 @@ module.exports = {
 			}
 			else callback(err);
 		}).lean();
-	}
+	},
 
 /*
 	addReview: function(studentUsername, mentorUsername, title, text, rating, reviewDate){

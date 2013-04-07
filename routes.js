@@ -172,8 +172,16 @@ module.exports = function(app){
 		})
 	}),
 
-	app.post('/acceptRequest/', function(req, res){
-
+	app.post('/acceptRequest/:fromname/:toname', function(req, res){
+		lessonInfo = {
+			studentName : req.params.fromname,
+			mentorName : req.params.toname,
+			lessonName :req.param('lessonName')
+		}
+		db.addLesson(lessonInfo, function(req, res){
+			res.redirect('/user/' + req.params.toname)
+		})
+		
 	})
 }
 	

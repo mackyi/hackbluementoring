@@ -212,6 +212,7 @@ module.exports = {
 				text: text,
 				requestDate: new Date() }] } }, 
 			{ upsert: true }).exec();
+
 		
 		//add mentor request to mentor record
 		User.update({ username: mentorUsername }, 
@@ -219,7 +220,6 @@ module.exports = {
 				studentUsername: studentUsername,
 				mentorUsername: mentorUsername,
 				text: text,
-
 				requestDate: new Date()}] } }, 
 			{ upsert: true }).exec();		
 	},

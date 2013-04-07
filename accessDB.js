@@ -190,6 +190,14 @@ module.exports = {
 			}
 		});
 	},
+
+  findLessonByUser: function(username, callback){
+    Lesson.find({ mentorUsername: username }, function(err,lessons){
+      if (!err){
+        callback(null, lessons);
+      }
+    })
+  },
 	
 // 	findAssignments: function(lessonId, callback){
 // 		Assignment.find({lessonId: lessonId}, function(err, assignments){

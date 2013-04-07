@@ -36,25 +36,30 @@ module.exports = function(app){
 			if(!user) res.render('home.jade', {locals: {
 				user: req.user, message: 'User page does not exist'
 			}})	
-			else if(user.userType == 'mentor'){
-				user.topicTags = user.topicTags.toString();
-				if(req.user && user.username === req.user.username){
-					page = 'mentorSelf.jade'
-				} else {
-					page = 'mentorPage.jade'
-				}				
-			} else{
-				if(req.user && user.username === req.user.username){
-					page ='studentSelf.jade'
-				} else{
-					page = 'studentPage.jade'
+			else{
+				db.findLessonByUser(username, function(err, lessons){
+					var lessons = lessons
+					if(user.userType == 'mentor'){
+						user.topicTags = user.topicTags.toString();
+						if(req.user && user.username === req.user.username){
+							page = 'mentorSelf.jade'
+						} else {
+							page = 'mentorPage.jade'
+					}				
+					} else{
+						if(req.user && user.username === req.user.username){
+							page ='studentSelf.jade'
+						} else{
+							page = 'studentPage.jade'
+						}
+					}
+					res.render(page, {locals: {
+						user: req.user, pageof: user, lessons: lessons
+					}})
 				}
-			}
-			res.render(page, {locals: {
-					user: req.user, pageof: user
-			}})
-		})
-	})
+			)	
+		}
+	})}),
 	app.post('/register', function(req, res){
 		console.log(req.body)
 		db.saveUser({
@@ -92,32 +97,36 @@ module.exports = function(app){
 
 	app.post('/updateinfo/picUrl', function(req, res){
 		if(req.user){
-			db.updatePicUrl(req.user.username, req.param('picUrl'));
-			res.redirect('/user/' + req.user.username)
+			db.updatePicUrl(req.user.username, req.param('picUrl'), function(err){
+				res.redirect('/user/' + req.user.username)
+			});
 		} else{
 			res.render('home.jade', {locals: {user: req.user, message: "You do not have permission to do that"}});
 		}
 	}),
 	app.post('/updateinfo/lname', function(req, res){
 		if(req.user){
-			db.updateLname(req.user.username, req.param('lname'));
-			res.redirect('/user/' + req.user.username)
+			db.updateLname(req.user.username, req.param('lname'), function(err){
+				res.redirect('/user/' + req.user.username)
+			});
 		} else{
 			res.render('home.jade', {locals: {user: req.user, message: "You do not have permission to do that"}});
 		}
 	}),
 	app.post('/updateinfo/fname', function(req, res){
 		if(req.user){
-			db.updateFname(req.user.username, req.param('fname'));
-			res.redirect('/user/' + req.user.username)
+			db.updateFname(req.user.username, req.param('fname'), function(err){
+				res.redirect('/user/' + req.user.username)
+			});
 		} else{
 			res.render('home.jade', {locals: {user: req.user, message: "You do not have permission to do that"}});
 		}
 	}),
 	app.post('/updateinfo/password', function(req, res){
 		if(req.user){
-			db.updatePassword(req.user.username, req.param('password'));
-			res.redirect('/user/' + req.user.username)
+			db.updatePassword(req.user.username, req.param('password'), function(err){
+				res.redirect('/user/' + req.user.username)
+			});
 		} else{
 			res.render('home.jade', {locals: {user: req.user, message: "You do not have permission to do that"}});
 		}

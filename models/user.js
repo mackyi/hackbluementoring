@@ -6,18 +6,26 @@ var mongoose = require('mongoose'),
 var collection = 'user';
 
 var userSchema = new Schema({
-  username: { type: String, unique: true},
-  hash:{type: String},
-  fname: String,
-  lname: String,
-  picUrl: String,
-  lessonIds: [ObjectId],
-  mentorRequests: [{
-  	studentId: ObjectId,
-  	mentorId: ObjectId,
-  	text: String,
-  	requestDate: Date
-  }]
+	username: { type: String, unique: true},
+	hash:{type: String},
+	userType: String,				//'mentor' or 'student'
+	fname: String,
+	lname: String,
+	picUrl: String,					//URL of profile pic
+	lessonIds: [ObjectId],			//mentor only - all lessons the mentor is teaching
+	mentorRequests: [{				//student can request to work with a mentor
+		studentUsername: String,
+  		mentorUsername: String,
+  		text: String,
+  		requestDate: Date
+  	}],
+  	mentors: [String],				//if student, these are all the associated mentors
+  	lessonIds: [ObjectId],			//if mentor, these are all associated students
+	topicTags: [String],
+	rating: Number,					//mentor only
+	reviews: [{ title: String,		//mentor only
+				username: String,
+				text: String }]  
 });
  
 userSchema.methods.verifyPassword = function(password, callback) {

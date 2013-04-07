@@ -1,0 +1,53 @@
+extends layout
+block content
+	.container
+		.spacer
+		.profilehead
+			.row
+				.span3
+					picUrl = locals.pageof.picUrl
+					img.img-polaroid(src=picUrl)
+				.span8
+					.row 
+						.span8
+							block rating
+					.row	
+						.span8
+							.spacer
+							.pageheader
+								h1 #{locals.pageof.fname} #{locals.pageof.lname} <small> (#{locals.pageof.username}) </small>
+							block type
+		.profilebody
+			ul.nav.nav-pills#myTab
+				li 
+					a(href="#profile", data-toggle="tab") Profile
+				li
+					a(href="#lessons", data-toggle="tab") My Lessons
+				li
+					a(href="#requests", data-toggle="tab") Requests
+				li
+					a(href="#settings", data-toggle="tab") Settings
+			#myTabContent.tab-content
+				.tab-pane.fade#profile
+					.row
+						.span4.offset1
+							h2 Bio
+							p #{locals.pageof.bio}
+						.span4
+							block connections
+					.row
+						.span8
+						block reviews
+				.tab-pane.fade#lessons
+				.tab-pane.fade#requests
+					.row
+						.span4.offset1
+							h2 Incoming Requests
+						.span4
+							h2 Pending Requests
+				.tab-pane.fade#settings
+					.row
+						h2 there is a form here where you can change your profilepic and other stuff
+block scripts
+	script(src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/js/bootstrap.min.js")
+	script(src="/javascript/tabs.js")

@@ -27,21 +27,27 @@ module.exports = function(app){
 		var username = req.params.uid;
 		db.findByUsername(username, function(err, user){
 			if(err) return err
+			var page;
 			if(!user) res.render('home.jade', {locals: {
 				user: req.user, message: 'User page does not exist'
-			}})
+			}})	
 			else if(user.userType == 'mentor'){
-				console.log(user.topicTags);
 				user.topicTags = user.topicTags.toString();
-				res.render('mentorPage.jade', {locals: {
-					user: req.user, pageof: user
-				}})
-				
+				if(req.user && user.username === req.user.username){
+					page = 'mentorSelf.jade'
+				} else {
+					page = 'mentorPage.jade'
+				}				
 			} else{
-				res.render('studentPage.jade', {locals: {
-					user: req.user, pageof: user
-				}})
+				if(req.user && user.username === req.user.username){
+					page ='studentSelf.jade'
+				} else{
+					page = 'studentPage.jade'
+				}
 			}
+			res.render(page, {locals: {
+					user: req.user, pageof: user
+			}})
 		})
 	})
 	app.post('/register', function(req, res){

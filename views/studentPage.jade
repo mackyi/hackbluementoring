@@ -8,18 +8,18 @@ block type
 	h3 Student
 block connections
 	h2 Lessons
-		- if(typeof locals.pageof.lessons!== 'undefined' && locals.pageof.lessons.length>0)
-			lessons = locals.pageof.lessons
-			table.table
-				thead
-					tr
-						th Name
-						th Mentor
-						th Date Started
-				tbody
-					-each lesson in lessons
-						mixin lesson(lesson)
-		- else
-			p This student has not been mentored by anyone.
+	- if(typeof locals.pageof.lessons!== 'undefined' && locals.pageof.lessons.length>0)
+		lessons = locals.pageof.lessons
+		table.table
+			thead
+				tr
+					th Name
+					th Mentor
+					th Date Started
+			tbody
+				-each lesson in lessons
+					mixin lesson(lesson)
+	- else
+		p This student has not been mentored by anyone.
 		
 		

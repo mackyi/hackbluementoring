@@ -1,0 +1,15 @@
+extends self-layout
+block lessons
+
+block type
+	h3 Mentor in #{locals.pageof.topicTags}
+
+block rating
+	h4.pull-right Rating: 
+		-if(typeof locals.pageof.rating!=='undefined')
+			p #{locals.pageof.rating}
+		-else
+			p None
+
+block reviews
+	h2 Reviews

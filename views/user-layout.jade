@@ -19,13 +19,11 @@ block content
 							block type
 		.profilebody
 			.row
-				.span4
+				.span4.offset1
 					h2 Bio
 					p #{locals.pageof.bio}
 				.span4
 					block connections
-			.row
-				.span8
-					h2 Reviews
-
-				
+				.row
+					.span8
+					block reviews

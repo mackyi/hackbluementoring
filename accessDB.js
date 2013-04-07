@@ -126,14 +126,15 @@ module.exports = {
     });
   },
   
-	findByUser: function(username, callback){
-    User.findOne({username: username}.lean(), function (err, user){
+	findByUsername: function(username, callback){
+    User.findOne({username: username}, function (err, user){
+      if(err) callback(err, null)
       if(user){
-        callback(null, user, null);
+        callback(null, user);
       } else {
-        callback(err, null, null);
+        callback(null, null);
       }
-    });
+    }).lean();
   },  
   
   

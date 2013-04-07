@@ -25,20 +25,21 @@ module.exports = function(app){
 
 	app.get('/user/:uid', function(req, res){
 		var username = req.params.uid;
-		db.findByUserName(username, function(err, user){
+		db.findByUsername(username, function(err, user){
 			if(err) return err
-			if(!user) res.render('/', locals: {
+			if(!user) res.render('/', {locals: {
 				user: req.user, message: 'User page does not exist'
-			})
-			if(user.userType === 'mentor'){
-				res.render('mentorPage.jade' {locals: {
-					user: req.user, pageof: user
-				}})
-			} else{
-				res.render('studentPage.jade' {locals: {
-					user: req.user, pageof: user
-				}})
-			}
+			}})
+			res.render('register.jade', {locals:{ message: user.hash}})
+			// if(user.userType === 'mentor'){
+			// 	res.render('mentorPage.jade' {locals: {
+			// 		user: req.user, pageof: user
+			// 	}})
+			// } else{
+			// 	res.render('studentPage.jade' {locals: {
+			// 		user: req.user, pageof: user
+			// 	}})
+			// }
 		})
 	})
 	app.post('/register', function(req, res){

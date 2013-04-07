@@ -26,7 +26,7 @@ module.exports = function(app){
 	app.get('/user/:uid', function(req, res){
 		var username = req.params.uid;
 		db.findByUsername(username, function(err, user){
-			if(err) return err
+			if(err) {return}
 			var page;
 			if(!user) res.render('home.jade', {locals: {
 				user: req.user, message: 'User page does not exist'
@@ -85,6 +85,40 @@ module.exports = function(app){
 	  })(req, res, next);
 	}),
 
+	app.post('/updateinfo/picUrl', function(req, res){
+		if(req.user){
+			db.updatePicUrl(req.user.username, req.param('picUrl'));
+			res.redirect('/user/' + req.user.username)
+		} else{
+			res.render('home.jade', {locals: {user: req.user, message: "You do not have permission to do that"}});
+		}
+	}),
+	app.post('/updateinfo/lname', function(req, res){
+		if(req.user){
+			db.updateLname(req.user.username, req.param('lname'));
+			res.redirect('/user/' + req.user.username)
+		} else{
+			res.render('home.jade', {locals: {user: req.user, message: "You do not have permission to do that"}});
+		}
+	}),
+	app.post('/updateinfo/fname', function(req, res){
+		if(req.user){
+			db.updateFname(req.user.username, req.param('fname'));
+			res.redirect('/user/' + req.user.username)
+		} else{
+			res.render('home.jade', {locals: {user: req.user, message: "You do not have permission to do that"}});
+		}
+	}),
+	app.post('/updateinfo/password', function(req, res){
+		if(req.user){
+			db.updatePassword(req.user.username, req.param('password'));
+			res.redirect('/user/' + req.user.username)
+		} else{
+			res.render('home.jade', {locals: {user: req.user, message: "You do not have permission to do that"}});
+		}
+	}),
+
+
 	app.get('/logout', function(req, res){
 	     req.logout();
 	     res.redirect('/');
@@ -103,7 +137,7 @@ module.exports = function(app){
 
 		db.findMentor(mentorInfo, function(err, mentors){
 			console.log(mentors);
-				mentors.topicTags= mentors.topicTags.toString();
+			mentors.topicTags= mentors.topicTags.toString();
 		})
 		mentors ={
 			mentor1: {

@@ -32,7 +32,7 @@ var userSchema = new Schema({
 });
  
 userSchema.methods.verifyPassword = function(password, callback) {
-	var res = this.password = password;
+	var res = this.password === password;
 	return callback(null, res);
   // bcrypt.compare(password, this.hash, function(err, res) {
   // 	if(err) return callback(err, null);

@@ -1,0 +1,25 @@
+form#lastname(action='/updateinfo/lname', method='POST')
+  div
+    label(for='newlname') Last Name:
+    input#newlname(type='text', name='lname', class='field')
+  .submit
+    button.btn(type='submit') Update
+form#firstname(action='/updateinfo/fname', method='POST')
+  div
+    label(for='newfname') First Name:
+    input#newfname(type='text', name='fname', class='field')
+  .submit
+    button.btn(type='submit') Update
+form#picUrl(action='/updateinfo/picUrl', method='POST')
+  div
+    label(for='newPicUrl') picUrl:
+    input#newPicUrl(type='text', name='picUrl', class='field')
+  .submit
+    button.btn(type='submit') Update
+form#password(action='/updateinfo/password', method='POST')
+  div
+    label(for='newbio') Password:
+    input#newpassword(type='password', name='password', class='field')
+  .submit
+    button.btn(type='submit') Update
+

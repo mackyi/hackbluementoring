@@ -13,7 +13,8 @@ html
 						li: a(href="/findMentors") Find Mentors
 					container.pull-right
 						- if (typeof locals.user !== 'undefined')
-							a.btn.btn-primary
+							selfurl = '/user/' + locals.user.username
+							a.btn.btn-primary(href=selfurl)
 								i.icon-user
 								|  
 								| #{locals.user.username}

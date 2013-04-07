@@ -149,7 +149,7 @@ module.exports = {
 				username: studentUsername,
 				text: text,
 				rating: rating,
-				reviewDate: new Date(); }] } }, 
+				reviewDate: new Date()}] } }, 
 			{ upsert: true }, function(err) {
 				if (!err){
 					//update rating based on avg of review ratings
@@ -226,21 +226,20 @@ module.exports = {
 				text: text,
 				requestDate: new Date() } } }, 
 			{ upsert: true }).exec(function(err,result){
-			if (err) callback(err);
-		});
-	},		
+			if (err) return callback(err);
+		});		
 
-		
 		//add mentor request to mentor record
-		User.update({ username: mentorUsername, callback }, 
+		User.update({ username: mentorUsername}, 
 			{ $push: { mentorRequests: { 
 				studentUsername: studentUsername,
 				mentorUsername: mentorUsername,
 				text: text,
 				requestDate: new Date() } } }, 
 			{ upsert: true }).exec(function(err,result){
-				if (err) callback(err);
+				if (err) return callback(err);
 		});
+      callback(null, true);
 	},		
 
 	updatePassword: function(username, newValue, callback){

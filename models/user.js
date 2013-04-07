@@ -13,7 +13,6 @@ var userSchema = new Schema({
 	lname: String,
 	bio: String,
 	picUrl: String,					//URL of profile pic
-	lessonIds: [ObjectId],			//mentor only - all lessons the mentor is teaching
 	mentorRequests: [{				//student can request to work with a mentor
 		studentUsername: String,
   		mentorUsername: String,

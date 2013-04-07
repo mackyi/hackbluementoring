@@ -160,21 +160,25 @@ module.exports = function(app){
 	app.get('/lesson/:lid', ensureAuthenticated, function(req, res){
 		lid = req.params.lid;
 		db.findLesson(lid, function(err, lesson){
-			res.render('lesson.jade', {locals: { user: req.user, lesson: lesson}})
+			db.findAssignments(lid, function(err, assignments){
+				console.log(assignments);
+				res.render('lesson.jade', {locals: { user: req.user, lesson: lesson, assignments: assignments}})
+			})
 		})
 	})
 
 	app.post('/addAssignment/:lid', function(req, res){
 		var lid = req.params.lid;
+		console.log(lid);
 		var assignmentInfo = {
 			name: req.param('name'),
 			text: req.param('text')
 		}
+		console.log(assignmentInfo)
 		db.addAssignment(assignmentInfo, lid, function(err){
-			if(err) return res.redirect('/')
-			res.redirect('/lesson/:lid');
+			if(!err) res.redirect('/lesson/' + lid);
 		})
-	})
+	}),
 
 	app.get('/writeRequest/:toname', ensureAuthenticated, function(req, res){
 		res.render('writeRequest.jade', {locals: {user: req.user, mentorname: req.param('toname')}})

@@ -9,7 +9,7 @@ db = require('./accessDB')
 
 var app = express();
 
-db.startup('mongodb://localhost/hackblue');
+db.startup('mongodb://localhost/hackblue2');
 
 
 function compile(str, path) {

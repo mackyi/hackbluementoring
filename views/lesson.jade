@@ -20,7 +20,7 @@ block content
 				.span3
 					h1 Give Assignments
 
-					actionurl = '/addAssignment/' + lesson.lessonId
+					actionurl = '/addAssignment/' + lesson._id
 					form#giveAssignment(action= actionurl, method='POST')
 						span3
 							label(for='name') Assignment Name:
@@ -29,19 +29,20 @@ block content
 							textarea#text(cols='100', rows='5', name='text', type='text')
 						.submit
 							button.btn(type='submit') Assign
-				.span4
+				.span7
 					h1 View Assignments
-					assignments = lesson.assignments
+					assignments = locals.assignments
 					mixin format(assignment)
 						.row
-							.span6
-								h3 assignment.name
-								p assignment.text
-					-if(typeof locals.lesson.assignments !== 'undefined' && locals.lesson.assignments !== null)
+							.span7 
+								.assignmentbox
+									h3.assignmentname #{assignment.name}
+									p.assignmenttext #{assignment.text}
+					-if(typeof locals.assignments !== 'undefined' && locals.assignments !== null)
 							-each assignment in assignments
 								mixin format(assignment)
+
 					-else
 						p No assignments
-				.span3
+				.span2
 					h1 chat
-block scripts

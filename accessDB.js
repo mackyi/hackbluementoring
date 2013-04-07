@@ -169,9 +169,11 @@ module.exports = {
 	},
 	
 	findAssignments: function(lessonId, callback){
-		Lesson.findById(lessonId, null, null, function(err, lesson){
+		Lesson.findById(lessonId, function(err, lesson){
 			if (!err){
-				Assignment.find({_id {$in: {lesson.assignments} } }, function(err,assignments){
+        var assign = lesson.assignments;
+        console.log('lesson.assignments:' +lesson.assignments);
+				Assignment.find({_id :{$in: assign } }, function(err,assignments){
 					callback(null, assignments);
 				});
 			}
@@ -196,18 +198,32 @@ module.exports = {
 // 	},
 	
 	addAssignment: function(assignment, lesson, callback){
-		Assignment.create({ 
+		var a = new Assignment({ 
 			name: assignment.name,
-			text: assignment.text,
-			feedback: assignment.feedback,
-			pickUrls: assignment.picUrls,
-			vidUrls: assignment.vidUrls,
-			comments: null
-		}, function(err){
+			text: assignment.text
+			// ,feedback: assignment.feedback,
+			// pickUrls: assignment.picUrls,
+			// vidUrls: assignment.vidUrls,
+			// comments: null
+		});
+    a.save(function(err, assignmentid){
 			if (!err){
-				Lesson.update({ _id: lesson._id }, { $push: { assignments: Assignment._id } }).exec(function(err){
-					if (err) console.log(err);
-				});
+        console.log('addassignment lessonid' + lesson._id)
+        console.log('addassignment' + lesson)
+        console.log('addassignment assignmentid' + assignmentid)
+				// Lesson.update({ _id: lesson}, {$push : {assignments: assignmentid._id}}, {upsert: true}).exec(function(err){
+				// 	if (err) console.log(err);
+    //       return callback(null);
+				// });
+
+        Lesson.findById(lesson, function(err, lesson){
+          console.log('lessonfindone '+ lesson)
+          lesson.assignments.push(assignmentid);
+          lesson.save()
+//          if (err) console.log(err);
+          callback(null);
+        });
+
 			}
 			else console.log(err);
 		});	
@@ -235,8 +251,6 @@ module.exports = {
       mentorUsername: lesson.mentorUsername,
       studentUsername: lesson.studentUsername,
       dateStarted: new Date(),
-      assignments: null,
-      chats: null
     })
     l.save(function(err, lesson){
       callback(null, lesson._id)

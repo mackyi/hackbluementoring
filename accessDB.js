@@ -142,8 +142,11 @@ module.exports = {
   
 	//to-do: this probably doesn't work if any of the values is null...
 	findMentor: function(mentorInfo, callback){
-//    var userInfo;
-
+	/*
+		for (var property in mentorInfo){
+			if property
+		}
+		*/
     // for each property in mentorInfo 
     //   if value!=''
     //     userInfo.property = 
@@ -210,7 +213,7 @@ module.exports = {
 				studentUsername: studentUsername,
 				mentorUsername: mentorUsername,
 				text: text,
-				requestDate: new Date() }] } }, 
+				requestDate: new Date() } } }, 
 			{ upsert: true }).exec();
 
 		
@@ -220,7 +223,12 @@ module.exports = {
 				studentUsername: studentUsername,
 				mentorUsername: mentorUsername,
 				text: text,
+<<<<<<< HEAD
 				requestDate: new Date()}] } }, 
+=======
+
+				requestDate: new Date()} } }, 
+>>>>>>> remove extra bracket
 			{ upsert: true }).exec();		
 	},
 

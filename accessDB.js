@@ -166,11 +166,22 @@ module.exports = {
 			});	
 	},
 	
-	findAssignments: function(lessonId, callback){
-    Assignment.find({lessonId: lessonId}, function(err, assignments){
-      callback(null, assignments);
-    })
-	},
+	findLesson: function(lessonId, callback){
+		Lesson.findById(lessonId, null, null, function(err, lesson){
+			if (!err){
+				callback(null, lesson);
+			}
+			else{
+				callback(err);
+			}
+		});
+	}
+	
+// 	findAssignments: function(lessonId, callback){
+// 		Assignment.find({lessonId: lessonId}, function(err, assignments){
+// 		  callback(null, assignments);
+// 		})
+// 	},
 	
 	addAssignment: function(assignment, lesson, callback){
 		Assignment.create({ 

@@ -207,7 +207,7 @@ module.exports = {
 				studentUsername: studentUsername,
 				mentorUsername: mentorUsername,
 				text: text,
-				requestDate: new Date(); }] } }, 
+				requestDate: new Date() }] } }, 
 			{ upsert: true });
 		
 		//add mentor request to mentor record
@@ -216,7 +216,7 @@ module.exports = {
 				studentUsername: studentUsername,
 				mentorUsername: mentorUsername,
 				text: text,
-				requestDate: new Date(); }] } }, 
+				requestDate: new Date() }] } }, 
 			{ upsert: true });		
 	},
 

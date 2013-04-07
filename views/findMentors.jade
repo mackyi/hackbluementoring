@@ -5,7 +5,7 @@ block content
 	.container
 		.spacer
 		h2 Search Parameters:
-		form#search(action='/searchMentors', method='POST')
+		form#search(action='/findMentors', method='POST')
 			.row
 				.span3.offset1	
 					label(for='firstname') First Name:
@@ -20,7 +20,15 @@ block content
 			.row
 				.span3.offset1
 					label(for='minRating') Minimum Rating(out of 5)
-					input#minRating(type="number", min="0", max="5", step="0.5")
+					input#minRating(name='minRating', type="number", min="0", max="5", step="0.5", value ="3")
 				.span3.offset2.submit
-					button.btn.btn-large(type='submit') Search!
+					button.btn.btn-large#searchButton(type='submit') Search!
 		.searchResults
+			- if(typeof locals.results !== 'undefined')
+				include partials/searchResults
+			- else
+				p No results.
+block scripts
+	script(src="/javascript/searchform.js") 
+
+		

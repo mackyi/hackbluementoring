@@ -23,6 +23,24 @@ module.exports = function(app){
 			user: req.user}});
 	}),
 
+	app.get('/user/:uid', function(req, res){
+		var username = req.params.uid;
+		db.findByUserName(username, function(err, user){
+			if(err) return err
+			if(!user) res.render('/', locals: {
+				user: req.user, message: 'User page does not exist'
+			})
+			if(user.userType === 'mentor'){
+				res.render('mentorPage.jade' {locals: {
+					user: req.user, pageof: user
+				}})
+			} else{
+				res.render('studentPage.jade' {locals: {
+					user: req.user, pageof: user
+				}})
+			}
+		})
+	})
 	app.post('/register', function(req, res){
 		db.saveUser({
 			password: req.param('password'),
@@ -56,17 +74,30 @@ module.exports = function(app){
 	     res.redirect('/');
 	}),
 
-	app.post('/searchMentors', function(req, res){
-		parameters = req.param('searchParameters');
+	app.post('/findMentors', function(req, res){
 		mentorInfo = {
-			minRating: req.param('minRating'),
-			firstName: req.param('firstName'),
-			lastName: req.param('lastName'),
-			areas: req.param('areas').split(",")
+			areas: req.param('areas').split(","),
+			minRating: req.param('minrating'),
+			firstName: req.body.firstname,
+			lastName: req.body.lastname
 		}
-		db.findmentors(mentorInfo, function(err, mentors){
-			res.send(JSON.stringify(mentors));
-		})
+		console.log(mentorInfo);
+		console.log(req.body);
+
+		// db.findmentors(mentorInfo, function(err, mentors){
+		// 		mentors.areas = mentors.areas.toString();
+		// })
+		mentors ={
+			mentor1: {
+				fname: 'Mack',
+				lname: 'Yi',
+				rating: '0',
+				areas: 'math, physics, computer science',
+				picUrl: 'http://sphotos-a.xx.fbcdn.net/hphotos-ash3/532386_4200069688061_127509570_n.jpg',
+				username: 'mackyi'
+			}
+		}
+		res.render('findMentors.jade', {locals:{results: mentors, user: req.user}})
 	}),
 
 
@@ -78,11 +109,12 @@ module.exports = function(app){
 			date: new Date(),
 			text: parameters.text,
 		}
-		db.saveRequest(requestInfo, function(err, success){
-			if(success){
-				res.send(JSON.stringify({message:'Request successful'}));
-			}
-		})
+
+		// db.saveRequest(requestInfo, function(err, success){
+		// 	if(success){
+		// 		res.send(JSON.stringify({message:'Request successful'}));
+		// 	}
+		// })
 	}),
 
 	app.post('/acceptRequest/', function(req, res){

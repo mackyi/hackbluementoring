@@ -3,3 +3,4 @@
 #login .error,#register .error{font-size:11px;text-align:left}
 #serverMessage{margin:auto;font-size:12px;text-align:center}
 .searchResults{padding:20px;background-color:#f6f6f6;width:100%;height:50%}
+.searchResults img{height:140px}

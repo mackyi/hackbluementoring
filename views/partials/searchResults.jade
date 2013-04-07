@@ -1,0 +1,24 @@
+results = locals.results
+mixin result(result)
+		mentorurl = '/user/' + result.username
+		tr
+			td
+				picUrl = result.picUrl
+				img.img-rounded(src=picUrl, href=mentorurl)
+			td #{result.fname} #{result.lname}
+			td #{result.areas}
+			td #{result.rating}
+			td 
+				a.button.btn(href=mentorurl) Go To Page
+.container.backBox
+	table.table
+		caption Results
+		thead
+			tr
+				th Picture
+				th Name
+				th Areas
+				th Rating
+		tbody
+			-each result in results
+				mixin result(result)

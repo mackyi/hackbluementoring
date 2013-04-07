@@ -48,8 +48,10 @@ block content
 							h2 Lessons
 							lessonIds = locals.user.lessonIds
 							mixin format(lessonId)
+								lessonurl = '/lesson/' + lessonId
 								.row
 									p id is: #{lessonId}
+									a.button.btn(href=lessonurl) Go To Lesson
 							-each lessonId in lessonIds
 								mixin format(lessonId)
 				.tab-pane.fade#requests

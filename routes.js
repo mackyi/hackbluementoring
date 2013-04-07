@@ -157,6 +157,9 @@ module.exports = function(app){
 		res.render('findMentors.jade', {locals:{results: mentors, user: req.user}})
 	}),
 
+	app.get('/lesson/:lid', function(req, res){
+		
+	})
 	app.get('/writeRequest/:toname', ensureAuthenticated, function(req, res){
 		res.render('writeRequest.jade', {locals: {user: req.user, mentorname: req.param('toname')}})
 	}),

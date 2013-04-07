@@ -1,0 +1,44 @@
+extends layout
+block content
+lesson = locals.lesson;
+	.container
+		.spacer
+		.profilehead
+			.row
+				.span3
+					picUrl = locals.pageof.picUrl
+					img.img-polaroid(src=picUrl)
+				.span8
+					.row 
+						.span2.pull-right
+							block rating
+					.row	
+						.spacer
+						.span5
+							.pageheader
+								h1 #{locals.pageof.fname} #{locals.pageof.lname} <small> (#{locals.pageof.username}) </small>
+							block type
+						.span2.pull-right
+							h4 Request Tutoring?
+							requesturl = '/writeRequest/' + locals.pageof.username
+							a.button.btn(href=requesturl) Make Request
+		.profilebody
+			.row
+				.span7
+					h1 Assignments
+					actionurl = '/addAssignment/' + lesson.lessonId
+					form#giveAssignment(action= actionurl, method='POST')
+						span3
+							label(for='text') Assignment Text:
+							textarea#text(cols='100', rows='5', name='text', type='text')
+						.submit
+							button.btn(type='submit') Assign
+					assignments = locals.user.lessonIds
+					mixin format(lessonId)
+						.row
+							p id is: #{lessonId}
+					-each lessonId in lessonIds
+						mixin format(lessonId)
+				.span3
+					h1 chat
+block scripts

@@ -1,0 +1,21 @@
+extends layout
+block head
+	title Write a Request
+block content
+	.container
+		h1 Make a Tutoring Request
+		.centerbox
+			fromname = locals.user.username
+			toname = locals.mentorname
+			actionurl = '/sendRequest/' + fromname + '/' + toname
+			form#writeRequest(action= actionurl, method='POST')
+				p <em> from: </em> #{fromname}
+				p <em> to: </em> #{toname}
+				.row
+					.span3
+						label(for='message') Message:
+						textarea#message(cols='100', rows='5', name='text', type='text')
+				.submit
+					button.btn(type='submit') Send
+		
+		

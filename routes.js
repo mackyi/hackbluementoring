@@ -2,6 +2,11 @@ var passport = require('passport');
 
 var db = require('./accessDB');
 
+function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) { return next(); }
+  res.redirect('/login')
+}
+
 module.exports = function(app){
 	app.get('/', function(req, res) {
 		console.log(req.user);
@@ -128,8 +133,8 @@ module.exports = function(app){
 		mentorInfo = {
 			topics: req.param('areas').split(","),
 			minRating: req.param('minrating'),
-			firstName: req.body.firstname,
-			lastName: req.body.lastname,
+			fname: req.body.firstname,
+			lname: req.body.lastname,
 			username: '',
 		}
 		console.log(mentorInfo);
@@ -137,7 +142,7 @@ module.exports = function(app){
 
 		db.findMentor(mentorInfo, function(err, mentors){
 			console.log(mentors);
-			mentors.topicTags= mentors.topicTags.toString();
+//			mentors.topicTags= mentors.topicTags.toString();
 		})
 		mentors ={
 			mentor1: {
@@ -152,21 +157,19 @@ module.exports = function(app){
 		res.render('findMentors.jade', {locals:{results: mentors, user: req.user}})
 	}),
 
-
-	app.post('/sendRequest/:userid', function(req, res){
+	app.get('/writeRequest/:toname', ensureAuthenticated, function(req, res){
+		res.render('writeRequest.jade', {locals: {user: req.user, mentorname: req.param('toname')}})
+	}),
+	app.post('/sendRequest/:fromname/:toname', function(req, res){
 		parameters = req.param('requestParameters'),
-		requestInfo = {
-			senderID: req.user._id,
-			receiverID: req.params.userid,
-			date: new Date(),
-			text: parameters.text,
-		}
-
-		// db.saveRequest(requestInfo, function(err, success){
-		// 	if(success){
-		// 		res.send(JSON.stringify({message:'Request successful'}));
-		// 	}
-		// })
+		studentName= req.params.fromname,
+		mentorName=  req.params.toname,
+		text= req.param('text'),
+		db.addMentorRequest(studentName, mentorName, text, function(err, success){
+			if(!err){
+				res.redirect('/user/' + req.params.toname);
+			}
+		})
 	}),
 
 	app.post('/acceptRequest/', function(req, res){

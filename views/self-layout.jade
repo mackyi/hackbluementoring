@@ -9,14 +9,18 @@ block content
 					img.img-polaroid(src=picUrl)
 				.span8
 					.row 
-						.span8
+						.span2.pull-right
 							block rating
 					.row	
-						.span8
-							.spacer
+						.spacer
+						.span5
 							.pageheader
 								h1 #{locals.pageof.fname} #{locals.pageof.lname} <small> (#{locals.pageof.username}) </small>
 							block type
+						.span2.pull-right
+							h4 Request Tutoring?
+							requesturl = '/writeRequest/' + locals.pageof.username
+							a.button.btn(href=requesturl) Make Request
 		.profilebody
 			ul.nav.nav-pills#myTab
 				li 

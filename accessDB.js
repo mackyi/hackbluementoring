@@ -3,44 +3,15 @@ var mongoose = require('mongoose');
 // var bcrypt = require('bcrypt');
 // var scrypt = require("scrypt");
 
-var passport = require('passport')
-  , LocalStrategy = require('passport-local').Strategy;
+var passport = require('passport'), 
+	LocalStrategy = require('passport-local').Strategy;
 
 var User = require('./models/user');
-
-
+var Assignment = require('./models/assignments');
+var Lesson = require('./models/lesson');
         
 
-
-var testuser = new User({
-	username: 'bgaston',
-	hash:'pass',
-	userType: 'student',				//'mentor' or 'student'
-	fname: 'Bryan',
-	lname: 'Gaston',
-	picUrl: 'https://fbcdn-profile-a.akamaihd.net/hprofile-ak-ash4/c33.33.411.411/s160x160/321163_10100317922487608_2052502439_n.jpg'					//URL of profile pic
-/*	lessonIds: [ObjectId],			//mentor only - all lessons the mentor is teaching
-	mentorRequests: [{				//student can request to work with a mentor
-		studentId: ObjectId,
-  		mentorId: ObjectId,
-  		text: String,
-  		requestDate: Date
-  	}],
-  	mentorIds: [ObjectId],			//if student, these are all the associated mentors
-  	lessonIds: [ObjectId],			//if mentor, these are all associated students
-	topicTags: [String],
-	rating: float,					//mentor only
-	reviews: [{ title: String,		//mentor only
-				username: String,
-				text: String }]  
-*/
-});
-/*
-testuser.save(function(err) {
-	if (err) {throw err;}
-});
-*/
-
+//to-do: remove - just for testing
 User.find(function(err, users){ console.log(users);} );
 
 
@@ -142,11 +113,13 @@ module.exports = {
   
 	//to-do: this probably doesn't work if any of the values is null...
 	findMentor: function(mentorInfo, callback){
-	/*
+/*		var userInfo;
 		for (var property in mentorInfo){
-			if property
+			if (mentorInfo[property] != ''){
+				userInfo.property = mentorInfo.property;
+			}
 		}
-		*/
+*/
     // for each property in mentorInfo 
     //   if value!=''
     //     userInfo.property = 
@@ -194,10 +167,48 @@ module.exports = {
 			});	
 	},
 */	
-	addTopicTag: function(username, newTags){
-		User.update({ username: username }, 
-			{ $addToSet: { topicTags: { $each: newTags } } }, 
-			{ upsert: true }).exec();	
+	
+	addAssignment: function(assignment, lesson){
+		Assignment.create({ 
+			name: assignment.name,
+			text: assignment.text,
+			feedback: assignment.feedback,
+			pickUrls: assignment.picUrls,
+			vidUrls: assignment.vidUrls,
+			comments: null
+		}, function(err){
+			if (!err){
+				Lesson.update({ _id: lesson._id }, { $push: { assignments: Assignment._id } }).exec(function(err){
+					if (err) console.log(err);
+				});
+			}
+			else console.log(err);
+		});	
+	},
+	
+	addAssignmentComment: function(assignmentId, commentObject){
+		Assignment.update({ _id: assignmentId },
+			{ comments: {$push: { commentObject } } }
+			).exec(function(err){
+				if (err) console.log(err);
+			});
+	},
+	
+	addLessonChat: function(lessonId, chatObject){
+		Lesson.update({ _id: lessonId },
+			{ chats: {$push: { chatObject } } }
+			).exec(function(err){
+			if (err) console.log(err);
+		});
+	},
+	
+	addLesson: function(lesson){
+		Lesson.create({ 
+			name: lesson.name,
+			dateStarted: new Date(),
+			assignments: null,
+			chats: null
+		});
 	},
 	
 	addMentor: function(studentUsername, mentorUsername){

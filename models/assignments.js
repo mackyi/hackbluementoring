@@ -5,6 +5,7 @@ var mongoose = require('mongoose'),
 var collection = 'assignment';
 
 var assignmentSchema = new Schema({
+	lectureId: ObjectId,
 	name: String,
 	text: String,
 	feedback: String,

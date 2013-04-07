@@ -167,13 +167,9 @@ module.exports = {
 	},
 	
 	findAssignments: function(lessonId, callback){
-		Lesson.find({ _id: lessonId}, function(err, lesson){
-			Assignment.find({ _id: lesson.assignments._id }, function(err, assignment){
-				if (!err){
-					callback(null, assignment);
-				}
-			});
-		});
+    Assignment.find({lessonId: lessonId}, function(err, assignments){
+      callback(null, assignments);
+    })
 	},
 	
 	addAssignment: function(assignment, lesson, callback){

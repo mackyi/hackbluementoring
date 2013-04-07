@@ -166,6 +166,16 @@ module.exports = {
 			});	
 	},
 	
+	findAssignments: function(lessonId, callback){
+		Lesson.find({ _id: lessonId}, function(err, lesson){
+			Assignment.find({ _id: lesson.assignments._id }, function(err, assignment){
+				if (!err){
+					callback(null, assignment);
+				}
+			});
+		});
+	},
+	
 	addAssignment: function(assignment, lesson, callback){
 		Assignment.create({ 
 			name: assignment.name,

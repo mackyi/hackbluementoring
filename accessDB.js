@@ -206,13 +206,28 @@ module.exports = {
 		});
 	},
 	
-	addLesson: function(lesson, callback){
-		Lesson.create({ 
-			name: lesson.name,
-			dateStarted: new Date(),
-			assignments: null,
-			chats: null
-		});
+	createLesson: function(lesson, callback){
+    var l = new Lesson({
+      name: lesson.name,
+      dateStarted: new Date(),
+      assignments: null,
+      chats: null
+    })
+    l.save(function(err, lesson){
+      callback(null, lesson._id)
+    })
+
+		// Lesson.create({ 
+		// 	name: lesson.name,
+  //     dateStarted: new Date(),
+  //     assignments: null,
+  //     chats: null
+		// }, function(err){
+  //     if (!err){
+  //       callback(null, Lesson._id);
+  //     }
+  //     else console.log(err);
+  //   });
 	},
 	
 	addMentor: function(studentUsername, mentorUsername, callback){
@@ -251,30 +266,35 @@ module.exports = {
 	updatePassword: function(username, newValue, callback){
 		User.update({ username: username }, { hash: newValue }).exec(function(err,result){
 			if (err) callback(err);
+      callback(null);
 		});
 	},		
 	
 	updateFname: function(username, newValue, callback){
 		User.update({ username: username }, { fname: newValue }).exec(function(err,result){
 			if (err) callback(err);
+      callback(null);
 		});
 	},		
 		
 	updateLname: function(username, newValue, callback){
 		User.update({ username: username }, { lname: newValue }).exec(function(err,result){
 			if (err) callback(err);
+      callback(null);
 		});
 	},		
 		
 	updatePicUrl: function(username, newValue, callback){
 		User.update({ username: username }, { picUrl: newValue }).exec(function(err,result){
 			if (err) callback(err);
+      callback(null);
 		});
 	},		
 		
 	addLesson: function(username, newValue, callback){
 		User.update({ username: username }, {$addToSet: { lessonIds: newValue }}, {upsert:true}).exec(function(err,result){
 			if (err) callback(err);
+      callback(null);
 		});
 	},		
 		

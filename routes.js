@@ -172,16 +172,22 @@ module.exports = function(app){
 		})
 	}),
 
-	app.post('/acceptRequest/:fromname/:toname', function(req, res){
+	app.get('/acceptRequest/:fromname/:toname', function(req, res){
 		lessonInfo = {
 			studentName : req.params.fromname,
 			mentorName : req.params.toname,
-			lessonName :req.param('lessonName')
+			name : req.params.toname +req.params.fromname
 		}
-		db.addLesson(lessonInfo, function(req, res){
-			res.redirect('/user/' + req.params.toname)
+		db.createLesson(lessonInfo, function(err, lessonid){
+			if(err) return res.redirect('/')
+			console.log(lessonid)
+			console.log(req.params.toname)
+			db.addLesson(req.params.toname, lessonid, function(){
+				db.addLesson(req.params.fromname, lessonid, function(){
+					res.redirect('/user/' + req.params.toname)
+				})
+			})
 		})
-		
 	})
 }
 	

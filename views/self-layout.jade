@@ -41,12 +41,29 @@ block content
 							block connections
 					.row
 						.span8
-						block reviews
+							block reviews
 				.tab-pane.fade#lessons
+					.row
+						.span4.offset1
+							h2 Lessons
+							lessonIds = locals.user.lessonIds
+							mixin format(lessonId)
+								.row
+									p id is: #{lessonId}
+							-each lessonId in lessonIds
+								mixin format(lessonId)
 				.tab-pane.fade#requests
 					.row
 						.span4.offset1
 							h2 Incoming Requests
+							requests = locals.user.mentorRequests
+							mixin format(request)
+								.row
+									accepturl = '/acceptRequest/' + request.studentUsername + '/' + request.mentorUsername
+									p from: #{request.studentUsername}
+									a.button.btn(href=accepturl) Accept Request
+							-each request in requests 
+								mixin format(request)
 						.span4
 							h2 Pending Requests
 				.tab-pane.fade#settings

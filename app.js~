@@ -47,7 +47,7 @@ app.configure('production', function(){
 });
 
 require('./routes')(app);
-var port = (process.env.VMC_APP_PORT || 80);
+var port = (process.env.VMC_APP_PORT || 3000);
 
 app.listen(port, function() {
   console.log("Listening on " + port);
